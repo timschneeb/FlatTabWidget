@@ -89,13 +89,13 @@ Get index or tab-item by title
 
 **Note:** `FlatTabItem` contains a reference to the animated label and the underlying widget provided by the user.
 
-#### Get item by id
+#### Get item by index
 
 ```c++
-FlatTabItem getItem(int id) const;
+FlatTabItem getItem(int index) const;
 ```
 
-Get tab-item by id
+Get tab-item by index
 
 #### Redraw widget
 
@@ -114,15 +114,6 @@ void setAnimatePageChange(bool value);
 ```
 
 Enable/disable fade animation when switching to another page
-
-#### Redraw widget
-
-```c++
-void redrawTabBar();
-void repaintDivider();
-```
-
-Redraw tab-bar/divider widget. Useful if a new palette has not been applied correctly.
 
 ### Advanced
 
