@@ -24,6 +24,8 @@
 #include <QBoxLayout>
 #include "clickablelabel.h"
 
+#include <3rdparty/StackedWidgetAnimation/StackedWidgetAnimation.h>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class FlatTabWidget; }
 QT_END_NAMESPACE
@@ -42,6 +44,13 @@ class FlatTabWidget : public QWidget
 public:
     FlatTabWidget(QWidget *parent = nullptr);
     ~FlatTabWidget();
+    /*!
+        \brief The TabPosition enum contains tab positions for use with \c setTabPosition and \c tabPosition
+    */
+    enum class TabPosition{
+        Top,
+        Bottom
+    };
     /*!
         \brief Add a new page.\n
                By default, the page will be appended to the page list, \n
@@ -140,6 +149,8 @@ private:
     bool animatePageChange = true;
     QStackedWidget* customSW = nullptr;
     bool detachCustomStackedWidget = false;
+    TabPosition tabPosition = TabPosition::Top;
+    WAF::AbstractAnimator* fade = nullptr;
 
     void updatePages(bool overrideSeparator = false);
     QStackedWidget *getActiveStackedWidget();
@@ -151,7 +162,7 @@ private:
     enum InsertPosition { InsertBefore, InsertAfter };
     static bool insertWidget(QBoxLayout * layout, QWidget * reference, QWidget * widget,
                       InsertPosition pos = InsertBefore, int stretch = 0,
-                      Qt::Alignment alignment = 0) {
+                      Qt::Alignment alignment = Qt::Alignment()) {
         int index = -1;
         for (int i = 0; i < layout->count(); ++i)
             if (layout->itemAt(i)->widget() == reference) {

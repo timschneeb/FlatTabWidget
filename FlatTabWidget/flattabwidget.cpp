@@ -18,7 +18,6 @@
 #include "colorprovider.h"
 
 #include <QEasingCurve>
-#include <3rdparty/StackedWidgetAnimation/StackedWidgetAnimation.h>
 
 using namespace ColorProvider;
 
@@ -29,6 +28,8 @@ FlatTabWidget::FlatTabWidget(QWidget *parent)
     ui->setupUi(this);
 
     lineMorph = new QPropertyAnimation();
+
+    ui->TabBarContainer->layout()->setSpacing(9);
 
     connect(ui->TabBarContainer,&CustomTabBar::scrolledUp,[=]{
         if(currentSelection - 1 < 0 || pages.empty())
@@ -54,11 +55,17 @@ FlatTabWidget::FlatTabWidget(QWidget *parent)
 
 FlatTabWidget::~FlatTabWidget()
 {
+    lineMorph->deleteLater();
+    fade->deleteLater();
+    for(const auto& item : qAsConst(pages))
+    {
+        item.fadeIn->deleteLater();
+        item.fadeOut->deleteLater();
+    }
     delete ui;
 }
 
 void FlatTabWidget::addPage(QString title, QWidget* page, int index){
-    auto pal = palette();
     auto textcolor_active = getColor(ColorRole::Active);
     auto textcolor_disabled = getColor(ColorRole::Inactive);
 
@@ -94,7 +101,7 @@ void FlatTabWidget::updatePages(bool overrideSeparator){
     }
     ui->TabBarContainer->repaint();
 
-    for (auto page : pages) {
+    for (auto page : qAsConst(pages)) {
         ui->TabBarContainer->layout()->addWidget(page.label);
         if(!detachCustomStackedWidget)
             activeContainer->addWidget(page.widget);
@@ -134,14 +141,13 @@ void FlatTabWidget::showEvent(QShowEvent *event)
 }
 
 void FlatTabWidget::redrawTabBar(){
-    for (auto page : pages)
+    for (auto page : qAsConst(pages))
         page.label->setColor(getColor(ColorRole::Inactive));
     int temp = currentSelection;
     setCurrentTab(temp);
 }
 
 void FlatTabWidget::removePage(int id){
-    auto pal = palette();
     auto textcolor_disabled = getColor(ColorRole::Inactive);
 
     if(!pages.empty() && (id >= 0 && id < pages.size())){
@@ -171,7 +177,7 @@ void FlatTabWidget::setCurrentTab(int id){
     } else {
         pages[id].fadeIn->stop();
         pages[id].fadeOut->stop();
-        pages[id].fadeIn = new QPropertyAnimation(pages[id].label, "color");
+        pages[id].fadeIn = new QPropertyAnimation(pages[id].label, "color", this);
         pages[id].fadeIn->setDuration(300);
         pages[id].fadeIn->setStartValue(textcolor_disabled);
         pages[id].fadeIn->setEndValue(textcolor_active);
@@ -179,7 +185,7 @@ void FlatTabWidget::setCurrentTab(int id){
         if(pages.size() > currentSelection){
             pages[currentSelection].fadeIn->stop();
             pages[currentSelection].fadeOut->stop();
-            pages[currentSelection].fadeOut = new QPropertyAnimation(pages[currentSelection].label, "color");
+            pages[currentSelection].fadeOut = new QPropertyAnimation(pages[currentSelection].label, "color", this);
             pages[currentSelection].fadeOut->setDuration(300);
             pages[currentSelection].fadeOut->setStartValue(textcolor_active);
             pages[currentSelection].fadeOut->setEndValue(textcolor_disabled);
@@ -189,7 +195,7 @@ void FlatTabWidget::setCurrentTab(int id){
     }
 
     lineMorph->stop();
-    lineMorph = new QPropertyAnimation(ui->SeparatorLine, "geometry");
+    lineMorph = new QPropertyAnimation(ui->SeparatorLine, "geometry", this);
     lineMorph->setDuration(300);
     lineMorph->setEasingCurve(QEasingCurve::OutCirc);
     lineMorph->setStartValue(ui->SeparatorLine->geometry());
@@ -198,8 +204,11 @@ void FlatTabWidget::setCurrentTab(int id){
 
     if(animatePageChange){
         QWidget* widget = getActiveStackedWidget()->widget(id);
+        if(fade != nullptr)
+            fade->animateStop();
         if(widget != nullptr)
-            WAF::StackedWidgetAnimation::fadeIn(getActiveStackedWidget(), widget);
+            fade = WAF::StackedWidgetAnimation::fadeIn(getActiveStackedWidget(), widget);
+
     }
     else
         getActiveStackedWidget()->setCurrentIndex(id);

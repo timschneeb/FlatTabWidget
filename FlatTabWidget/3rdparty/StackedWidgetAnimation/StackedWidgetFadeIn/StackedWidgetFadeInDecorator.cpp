@@ -18,6 +18,7 @@
 
 #include <QPainter>
 #include <QStackedWidget>
+#include <QApplication>
 
 using WAF::StackedWidgetFadeInDecorator;
 
@@ -47,7 +48,8 @@ void StackedWidgetFadeInDecorator::setOpacity(qreal _opacity)
 void StackedWidgetFadeInDecorator::grabContainer()
 {
 	if (QStackedWidget* container = qobject_cast<QStackedWidget*>(parentWidget())) {
-		m_containerPixmap = grabWidget(container->currentWidget());
+        container->setStyleSheet(QString("QWidget#tabHostPage1,QWidget#tabHostPage2,QWidget#tabHostPage3,QWidget#tabHostPage4,QWidget#tabHostPage5,QWidget#tabHostPage6,QWidget#tabHostPage7,QWidget#tabHostPage8,QWidget#tabHostPage9{background-color: %1;}").arg(qApp->palette().window().color().lighter().name()));
+        m_containerPixmap = grabWidget(container->currentWidget());
 	}
 }
 
@@ -72,7 +74,7 @@ QPixmap StackedWidgetFadeInDecorator::grabWidget(QWidget* _widgetForGrab)
 	_widgetForGrab->resize(size);
 	resize(size);
 	QPixmap widgetPixmap(size);
-	_widgetForGrab->render(&widgetPixmap, QPoint(), QRegion(QRect(QPoint(), size)));
+    _widgetForGrab->render(&widgetPixmap, QPoint(), QRegion(QRect(QPoint(), size)));
 	return widgetPixmap;
 }
 

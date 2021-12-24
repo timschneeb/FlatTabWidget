@@ -59,7 +59,7 @@ namespace WAF
          * @brief Обратной анимации для данного случая нет
          */
         void animateBackward() {}
-
+        void animateStop();
     protected:
         /**
          * @brief Переопределяется, чтобы корректировать позицию перекрывающего виджета

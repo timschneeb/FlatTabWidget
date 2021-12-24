@@ -14,7 +14,7 @@
  * Full license: https://github.com/dimkanovikov/WidgetAnimationFramework/blob/master/LICENSE
  */
 
-#include "../AbstractAnimator.h"
+
 
 #include "StackedWidgetAnimation.h"
 #include "StackedWidgetAnimationPrivate.h"
@@ -90,7 +90,7 @@ void StackedWidgetAnimation::slideOver(QStackedWidget* _container, QWidget* _wid
     }
 }
 
-int StackedWidgetAnimation::fadeIn(QStackedWidget* _container, QWidget* _widget)
+AbstractAnimator* StackedWidgetAnimation::fadeIn(QStackedWidget* _container, QWidget* _widget)
 {
     const StackedWidgetAnimationPrivate::AnimatorType animatorType = StackedWidgetAnimationPrivate::FadeIn;
     AbstractAnimator* animator = 0;
@@ -99,13 +99,12 @@ int StackedWidgetAnimation::fadeIn(QStackedWidget* _container, QWidget* _widget)
     } else {
         StackedWidgetFadeInAnimator* fadeInAnimator = new StackedWidgetFadeInAnimator(_container, _widget);
         animator = fadeInAnimator;
-
         pimpl()->saveAnimator(_widget, animator, animatorType);
     }
 
     animator->animateForward();
 
-    return animator->animationDuration();
+    return animator;
 }
 
 StackedWidgetAnimationPrivate* StackedWidgetAnimation::m_pimpl = 0;

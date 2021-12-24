@@ -73,6 +73,12 @@ void StackedWidgetSlideOverAnimator::animateForward()
 	slideOverIn();
 }
 
+void StackedWidgetSlideOverAnimator::animateStop()
+{
+    if(m_animation != nullptr)
+        m_animation->stop();
+}
+
 void StackedWidgetSlideOverAnimator::slideOverIn()
 {
 	//

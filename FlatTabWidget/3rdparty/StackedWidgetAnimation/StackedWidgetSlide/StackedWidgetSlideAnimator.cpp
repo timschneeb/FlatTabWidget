@@ -70,6 +70,11 @@ void StackedWidgetSlideAnimator::animateForward()
 	slide();
 }
 
+void StackedWidgetSlideAnimator::animateStop()
+{
+    //not implemented
+}
+
 void StackedWidgetSlideAnimator::slide()
 {
 	//

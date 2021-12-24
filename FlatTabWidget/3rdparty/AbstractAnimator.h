@@ -49,6 +49,8 @@ namespace WAF
 		 */
 		virtual void animateBackward() = 0;
 
+        virtual void animateStop() = 0;
+
 	protected:
 		/**
 		 * @brief Установить флаг выполнения анимации

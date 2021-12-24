@@ -18,6 +18,7 @@
 #define STACKEDWIDGETANIMATION_H
 
 #include "../WAF.h"
+#include "../AbstractAnimator.h"
 
 class QColor;
 class QRect;
@@ -68,7 +69,7 @@ namespace WAF
         /**
          * @brief Текущий виджет растворяется, а заданный виджет появляется
          */
-        static int fadeIn(QStackedWidget* _container, QWidget* _widget);
+        static AbstractAnimator* fadeIn(QStackedWidget* _container, QWidget* _widget);
 
     private:
         /**

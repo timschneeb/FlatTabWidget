@@ -107,7 +107,15 @@ void StackedWidgetFadeInAnimator::fadeIn()
 		m_animation->setEndValue(finalOpacity);
 
 		m_animation->start();
-	}
+    }
+}
+
+void StackedWidgetFadeInAnimator::animateStop()
+{
+    if(m_animation != nullptr){
+        m_animation->stop();
+        m_animation->emit finished();
+    }
 }
 
 bool StackedWidgetFadeInAnimator::eventFilter(QObject* _object, QEvent* _event)

@@ -73,6 +73,7 @@ namespace WAF
         void slideOverOut();
         /** @} */
 
+        void animateStop();
     protected:
         /**
          * @brief Переопределяется, чтобы корректировать позицию перекрывающего виджета
