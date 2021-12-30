@@ -237,17 +237,12 @@ QColor FlatTabWidget::getColor(FlatTabWidget::ColorRole role) const
 {
     auto pal = palette();
     auto textcolor_active = pal.color(QPalette::ButtonText).darker(0);
-    auto textcolor_disabled_light = pal.color(QPalette::Disabled,QPalette::WindowText).darker(150);
-    auto textcolor_disabled_dark = pal.color(QPalette::Disabled,QPalette::WindowText).lighter(150);
-
-    Hsl hsl0 = Hsl::ofQColor(pal.color(QPalette::WindowText));
-    Hsl hsl1 = Hsl::ofQColor(pal.color(QPalette::Window));
-    bool isLightPalette = hsl0.l < hsl1.l;
+    auto textcolor_disabled = pal.color(QPalette::Disabled,QPalette::WindowText);
 
     if(role == ColorRole::Active)
         return textcolor_active;
     else
-        return isLightPalette ? textcolor_disabled_light : textcolor_disabled_dark;
+        return textcolor_disabled;
 }
 
 FlatTabItem FlatTabWidget::getItem(int id) const{
