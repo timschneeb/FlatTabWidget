@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
 
 To use it in the designer, you'll need to setup up a promoted widget. Refer to the [Qt docs](https://doc.qt.io/qt-5/designer-using-custom-widgets.html#promoting-widgets) for further information. Enter these parameters in the input fields of the 'Promoted Widgets' dialog:
 
-| Base class name | Promoted class name | Header file       |
-| --------------- | ------------------- | ----------------- |
-| `QWidget`       | `FlatTabWidget`     | `flattabwidget.h` |
-
+| Base class name | Promoted class name | Header file       | Global include |
+| --------------- | ------------------- | ----------------- | -------------- |
+| `QWidget`       | `FlatTabWidget`     | `flattabwidget.h` | `true`         |
+ 
 ## Documentation
 
 ### Basic
