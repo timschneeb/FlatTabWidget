@@ -31,7 +31,7 @@ FlatTabWidget::FlatTabWidget(QWidget *parent)
 
     ui->TabBarContainer->layout()->setSpacing(9);
 
-    connect(ui->TabBarContainer,&CustomTabBar::scrolledUp,[=]{
+    connect(ui->TabBarContainer, &CustomTabBar::scrolledUp, this, [this]{
         if(currentSelection - 1 < 0 || pages.empty())
             return;
 
@@ -41,7 +41,7 @@ FlatTabWidget::FlatTabWidget(QWidget *parent)
             setCurrentTab(currentSelection - 1);
         }
     });
-    connect(ui->TabBarContainer,&CustomTabBar::scrolledDown,[=]{
+    connect(ui->TabBarContainer, &CustomTabBar::scrolledDown, this, [this]{
         if(currentSelection + 1 >= pages.size() || pages.empty())
             return;
 
@@ -77,12 +77,12 @@ void FlatTabWidget::addPage(QString title, QWidget* page, int index){
     } else {
         lbl->setColor(textcolor_disabled);
     }
-    connect(lbl,&ClickableLabel::clicked,this,&FlatTabWidget::lblHandler);
+    connect(lbl, &ClickableLabel::clicked, this, &FlatTabWidget::lblHandler);
 
     if(index < 0)
         pages.append(FlatTabItem(lbl,page));
     else
-        pages.insert(index,FlatTabItem(lbl,page));
+        pages.insert(index, FlatTabItem(lbl,page));
     updatePages();
 }
 void FlatTabWidget::updatePages(bool overrideSeparator){

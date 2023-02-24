@@ -41,7 +41,7 @@ StackedWidgetSlideOverAnimator::StackedWidgetSlideOverAnimator(QStackedWidget* _
 
 	m_decorator->hide();
 
-	connect(m_animation, &QPropertyAnimation::finished, [=] {
+    connect(m_animation, &QPropertyAnimation::finished, [=, this] {
 		setAnimatedStopped();
 
 		if (isAnimatedForward()) {

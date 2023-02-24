@@ -39,7 +39,7 @@ StackedWidgetFadeInAnimator::StackedWidgetFadeInAnimator(QStackedWidget* _contai
 
 	m_decorator->hide();
 
-	connect(m_animation, &QPropertyAnimation::finished, [=] {
+    connect(m_animation, &QPropertyAnimation::finished, [=, this] {
 		setAnimatedStopped();
 
 		if (m_animation->direction() == QPropertyAnimation::Forward) {

@@ -44,7 +44,7 @@ StackedWidgetSlideAnimator::StackedWidgetSlideAnimator(QStackedWidget* _containe
 	m_containerDecorator->hide();
 	m_widgetDecorator->hide();
 
-	connect(m_widgetAnimation, &QPropertyAnimation::finished, [=] {
+    connect(m_widgetAnimation, &QPropertyAnimation::finished, [=, this] {
 		setAnimatedStopped();
 
 		_container->setCurrentWidget(_widgetForSlide);
