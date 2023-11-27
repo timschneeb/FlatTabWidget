@@ -57,7 +57,7 @@ FlatTabWidget::~FlatTabWidget()
 {
     lineMorph->deleteLater();
     fade->deleteLater();
-    for(const auto& item : qAsConst(pages))
+    for(const auto& item : std::as_const(pages))
     {
         item.fadeIn->deleteLater();
         item.fadeOut->deleteLater();
@@ -101,7 +101,7 @@ void FlatTabWidget::updatePages(bool overrideSeparator){
     }
     ui->TabBarContainer->repaint();
 
-    for (auto page : qAsConst(pages)) {
+    for (auto page : std::as_const(pages)) {
         ui->TabBarContainer->layout()->addWidget(page.label);
         if(!detachCustomStackedWidget)
             activeContainer->addWidget(page.widget);
@@ -141,7 +141,7 @@ void FlatTabWidget::showEvent(QShowEvent *event)
 }
 
 void FlatTabWidget::redrawTabBar(){
-    for (auto page : qAsConst(pages))
+    for (auto page : std::as_const(pages))
         page.label->setColor(getColor(ColorRole::Inactive));
     int temp = currentSelection;
     setCurrentTab(temp);
